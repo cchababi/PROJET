@@ -1,0 +1,90 @@
+[
+  {
+    "id": "marrakech",
+    "name": "Marrakech",
+    "image": "PHOTO MARRAKECH.jpg",
+    "description": "Une ville charmante qui combine une riche histoire et la modernité.",
+    "details": "Marrakech est connue pour ses souks traditionnels, ses magnifiques jardins et des mosquées historiques comme la Koutoubia.",
+    "secondaryImages": [
+      {"src": "MARKOTOBIA.jpg", "text": "Les souks animés de Marrakech."},
+      {"src": "MARBAHIA.jpg", "text": "Une merveille architecturale, reflet de l’élégance marocaine."},
+      {"src": "MARJAMAEFNA.png", "text": "La place Jemaa el-Fna en soirée."},
+      {"src": "MARJARD.jpg", "text": "Un havre de paix bleu cobalt au milieu de la ville rouge."},
+      {"src": "MARYOUS.jpg", "text": "Là où l’art de l’enseignement rejoint la beauté des arabesques."},
+      {"src": "MARAGNOU.jpg", "text": "Une porte majestueuse qui chuchote les secrets du passé."},
+      {"src": "MARMENARA.png", "text": "La place Jemaa el-Fna en soirée."},
+      {"src": "MARJAMAEFNA.png", "text": "La place Jemaa el-Fna en soirée."}
+    ]
+  },
+  {
+    "id": "rabat",
+    "name": "Rabat",
+    "image": "/PHOTO ACCEUIL/PHOTO RABAT.jpg",
+    "description": "La capitale du Maroc, riche en monuments culturels et patrimoniaux.",
+    "details": "Rabat abrite des sites comme la Kasbah des Oudayas, la Tour Hassan, ainsi que plusieurs musées et galeries d'art.",
+    "secondaryImages": [
+      {"src": "PHOTO RABAT 1.jpg", "text": "La Kasbah des Oudayas."},
+      {"src": "PHOTO RABAT 2.jpg", "text": "La Tour Hassan."}
+    ]
+  },
+  {
+    "id": "casablanca",
+    "name": "Casablanca",
+    "images": [
+      "PHOTO CASA1.jpg",
+      "PHOTO CASA2.jpg"
+    ],
+    "description": "La ville des affaires, un centre urbain moderne.",
+    "details": "Casablanca possède la célèbre mosquée Hassan II, la corniche Ain Diab, ainsi que des centres commerciaux internationaux."
+  },
+  {
+    "id": "fes",
+    "name": "Fès",
+    "images": [
+      "PHOTO FES1.webp",
+      "PHOTO FES2.webp"
+    ],
+    "description": "L'une des plus anciennes villes historiques du Maroc.",
+    "details": "Fès est célèbre pour sa médina classée au patrimoine mondial, ses souks traditionnels, et ses écoles anciennes."
+  },
+  {
+    "id": "tanger",
+    "name": "Tanger",
+    "images": [
+      "PHOTO TANGER1.jpg",
+      "PHOTO TANGER2.jpg"
+    ],
+    "description": "Ville portuaire au carrefour de l'Europe et de l'Afrique.",
+    "details": "Tanger est célèbre pour sa médina, ses plages et son histoire comme porte d'entrée du Maroc."
+  },
+  {
+    "id": "asilah",
+    "name": "Asilah",
+    "images": [
+      "PHOTO ASILAH1.jpg",
+      "PHOTO ASILAH2.jpg"
+    ],
+    "description": "Charmante ville côtière connue pour son festival d'art.",
+    "details": "Asilah est réputée pour ses remparts, ses ruelles blanchies à la chaux et son ambiance artistique."
+  },
+  {
+    "id": "chefchaouen",
+    "name": "Chefchaouen",
+    "images": [
+      "PHOTO CHEFCHAOUAN1.jpg",
+      "PHOTO CHEFCHAOUAN2.jpg"
+    ],
+    "description": "La ville bleue, célèbre pour ses ruelles peintes en bleu.",
+    "details": "Chefchaouen est un lieu paisible dans les montagnes du Rif, avec une architecture unique et un artisanat local vibrant."
+  },
+  {
+    "id": "ouarzazate",
+    "name": "Ouarzazate",
+    "images": [
+      "PHOTO OUARZAZAT1.webp",
+      "PHOTO OUARZAZAT2.webp"
+    ],
+    "description": "Porte du désert et célèbre pour ses studios de cinéma.",
+    "details": "Ouarzazate est connue pour la kasbah de Taourirt, ses paysages désertiques et ses productions cinématographiques."
+  }
+]

@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Application Touristique - Mode Sombre</title>
+<style>
+  /* Mode clair */
+  body {
+    font-family: Arial, sans-serif;
+    background: url('PHOTO_ACCEUIL/ARRPL.jpg') no-repeat center center fixed;
+    background-size: cover;
+    margin: 0; 
+    padding: 20px;
+    color: #333;
+    transition: background 0.3s, color 0.3s;
+  }
+  h1 {
+    text-align: center;
+    color: #011B37;
+  }
+  .city-list, .city-details {
+    max-width: 1000px;
+    margin: 30px auto;
+  }
+  .city-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: flex-start; 
+  }
+  .city-card {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    width: 320px; 
+    cursor: pointer;
+    transition: transform 0.2s, background 0.3s;
+  }
+  .city-card:hover {
+    transform: scale(1.05);
+  }
+  .city-image {
+    width: 100%;
+    height: 150px;
+    border-radius: 10px 10px 0 0;
+    object-fit: cover;
+  }
+  .city-info {
+    padding: 15px;
+  }
+  .city-name {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  .city-desc {
+    font-size: 0.9rem;
+    color: #666;
+  }
+  .back-button {
+    margin: 20px auto;
+    max-width: 1000px;
+    text-align: left;
+  }
+  .back-button button,
+  #toggleDarkMode {
+    background-color: #011B37;
+    color: white;
+    border: none;
+    padding: 10px 18px;
+    font-size: 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-bottom: 10px;
+    transition: background-color 0.3s;
+  }
+  .back-button button:hover,
+  #toggleDarkMode:hover {
+    background-color: #011b37;
+  }
+  .city-details-content {
+    background: white;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+    transition: background 0.3s, color 0.3s;
+  }
+  .city-details-content h2 {
+    margin-top: 0;
+  }
+  .city-details-content .main-image {
+    width: 100%;
+    max-height: 350px;
+    border-radius: 10px;
+    object-fit: cover;
+    cursor: pointer;
+  }
+  .secondary-images {
+    margin-top: 20px;
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .secondary-image-container {
+    width: 150px;
+    cursor: pointer;
+    text-align: center;
+  }
+  .secondary-image-container img {
+    width: 100%;
+    height: 100px;
+    border-radius: 8px;
+    object-fit: cover;
+    border: 2px solid transparent;
+    transition: border-color 0.3s;
+  }
+  .secondary-image-container:hover img {
+    border-color: #011B37;
+  }
+  .secondary-image-container p {
+    font-size: 0.85rem;
+    margin-top: 5px;
+    color: #444;
+  }
+
+  /* Mode sombre */
+  body.dark-mode {
+    background: #121212 url('background-dark.jpg') no-repeat center center fixed;
+    background-size: cover;
+    color: #eee;
+  }
+  body.dark-mode h1 {
+    color: #f8fbff;
+  }
+  body.dark-mode .city-card {
+    background: #1e1e1e;
+    box-shadow: 0 2px 10px rgba(255,255,255,0.1);
+  }
+  body.dark-mode .city-card:hover {
+    background: #2a2a2a;
+  }
+  body.dark-mode .city-desc {
+    color: #bbb;
+  }
+  body.dark-mode .city-details-content {
+    background: #1e1e1e;
+    color: #eee;
+    box-shadow: 0 2px 15px rgba(255,255,255,0.1);
+  }
+  body.dark-mode .back-button button,
+  body.dark-mode #toggleDarkMode {
+    background-color: #3c5777;
+    color: #121212;
+  }
+  body.dark-mode .back-button button:hover,
+  body.dark-mode #toggleDarkMode:hover {
+    background-color: #011B37;
+  }
+
+  /* Modal pour agrandir image */
+  #imageModal {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    padding-top: 60px;
+    left: 0; top: 0; width: 100%; height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.8);
+  }
+  #imageModal img {
+    margin: auto;
+    display: block;
+    max-width: 90%;
+    max-height: 80%;
+    border-radius: 10px;
+  }
+  #imageModal span {
+    position: absolute;
+    top: 30px;
+    right: 35px;
+    color: #fff;
+    font-size: 40px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+</style>
+</head>
+<body>
+
+  <h1>Découvrez les plus belles villes du Maroc</h1>
+
+  <div id="app">
+
+    <button id="toggleDarkMode">Changer le mode sombre</button>
+
+    <div class="city-list" id="cityList">
+      <!-- Les cartes des villes s'affichent ici -->
+    </div>
+
+    <div class="city-details" id="cityDetails" style="display:none;">
+      <div class="back-button">
+        <button onclick="showCityList()">Retour à la liste</button>
+      </div>
+      <div class="city-details-content" id="detailsContent">
+        <!-- Les détails de la ville s'affichent ici -->
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Modal image agrandie -->
+  <div id="imageModal">
+    <span id="closeModal">&times;</span>
+    <img id="modalImg" src="" alt="Image agrandie" />
+    <p id="modalCaption" style="color: white; text-align: center; margin-top: 10px;"></p>
+  </div>
+
+<script>
+  const cities = [
+    {
+      name: "Marrakech",
+      image: "PHOTO_ACCEUIL/PHOTO MARRAKECH.jpg",
+      description: "Une ville charmante qui combine une riche histoire et la modernité.",
+      details: "Marrakech est connue pour ses souks traditionnels, ses magnifiques jardins et des mosquées historiques comme la Koutoubia.",
+      secondaryImages: [
+        {src: "PHOTO_ACCEUIL/MARKOTOBIA.jpg", text: "Les souks animés de Marrakech."},
+        
+        
+        {src: "PHOTO_ACCEUIL/MARBAHIA.jpg", text: "Une merveille architecturale, reflet de l’élégance marocaine."},
+        {src: "PHOTO_ACCEUIL/MARJAMAEFNA.png", text: "La place Jemaa el-Fna en soirée."},
+        {src: "PHOTO_ACCEUIL/MARJARD.jpg", text: "Un havre de paix bleu cobalt au milieu de la ville rouge."},
+        {src: "PHOTO_ACCEUIL/MARYOUS.jpg", text: "Là où l’art de l’enseignement rejoint la beauté des arabesques."},
+        {src: "PHOTO_ACCEUIL/MARAGNOU.jpg", text: "Une porte majestueuse qui chuchote les secrets du passé"},
+        {src: "PHOTO_ACCEUIL/MARMENARA.png", text: "La place Jemaa el-Fna en soirée."},
+        {src: "PHOTO_ACCEUIL/MARJAMAEFNA.png", text: "La place Jemaa el-Fna en soirée."}
+
+      ]
+    },
+    {
+      name: "Rabat",
+      image: "PHOTO_ACCEUIL/PHOTO RABATT.jpg",
+      description: "La capitale du Maroc, riche en monuments culturels et patrimoniaux.",
+      details: "Rabat abrite des sites comme la Kasbah des Oudayas, la Tour Hassan, ainsi que plusieurs musées et galeries d'art.",
+      secondaryImages: [
+        {src: "PHOTO_ACCEUIL/rabatimg.jpg", text: "La Kasbah des Oudayas."},
+        {src: "PHOTO_ACCEUIL/rabattourhassan.jpg", text: "La Tour Hassan."}
+      ]
+    },
+    {
+      name: "Casablanca",
+      image: "PHOTO_ACCEUIL/PHOTO CASSA.jpg",
+      description: "La ville des affaires, un centre urbain moderne.",
+      details: "Casablanca possède la célèbre mosquée Hassan II, la corniche Ain Diab, ainsi que des centres commerciaux internationaux.",
+     secondaryImages: [
+        {src: "PHOTO_ACCEUIL/rabatimg.jpg", text: "La Kasbah des Oudayas."},
+        {src: "PHOTO_ACCEUIL/rabattourhassan.jpg", text: "La Tour Hassan."}
+      ] 
+    },
+    {
+      name: "Fès",
+      images: "PHOTO_ACCEUIL/PHOTO FES.webp",
+      description: "L'une des plus anciennes villes historiques du Maroc.",
+      details: "Fès est célèbre pour sa médina classée au patrimoine mondial, ses souks traditionnels, et ses écoles anciennes.",
+       secondaryImages: [
+        {src: "/PHOTO_ACCEUIL/rabatimg.jpg", text: "La Kasbah des Oudayas."},
+        {src: "/PHOTO_ACCEUIL/PHOTO RABAT 2.jpg", text: "La Tour Hassan."}
+      ] 
+    },
+    {
+      name: "Tanger",
+      images: [
+        "PHOTO TANGER1.jpg",
+        "PHOTO TANGER2.jpg"
+      ],
+      description: "Ville portuaire au carrefour de l'Europe et de l'Afrique.",
+      details: "Tanger est célèbre pour sa médina, ses plages et son histoire comme porte d'entrée du Maroc."
+    },
+    {
+      name: "Asilah",
+      images: [
+        "PHOTO ASILAH1.jpg",
+        "PHOTO ASILAH2.jpg"
+      ],
+      description: "Charmante ville côtière connue pour son festival d'art.",
+      details: "Asilah est réputée pour ses remparts, ses ruelles blanchies à la chaux et son ambiance artistique."
+       
+    },
+    {
+      name: "Chefchaouen",
+      images: [
+        "PHOTO CHEFCHAOUAN1.jpg",
+        "PHOTO CHEFCHAOUAN2.jpg"
+      ],
+      description: "La ville bleue, célèbre pour ses ruelles peintes en bleu.",
+      details: "Chefchaouen est un lieu paisible dans les montagnes du Rif, avec une architecture unique et un artisanat local vibrant."
+      
+    },
+    {
+      name: "Ouarzazate",
+      images: [
+        "PHOTO OUARZAZAT1.webp",
+        "PHOTO OUARZAZAT2.webp"
+      ],
+      description: "Porte du désert et célèbre pour ses studios de cinéma.",
+      details: "Ouarzazate est connue pour la kasbah de Taourirt, ses paysages désertiques et ses productions cinématographiques."
+    }
+  ];
+
+  const cityList = document.getElementById('cityList');
+  const cityDetails = document.getElementById('cityDetails');
+  const detailsContent = document.getElementById('detailsContent');
+  const toggleDarkModeBtn = document.getElementById('toggleDarkMode');
+
+  // Modal elements
+  const imageModal = document.getElementById('imageModal');
+  const modalImg = document.getElementById('modalImg');
+  const modalCaption = document.getElementById('modalCaption');
+  const closeModal = document.getElementById('closeModal');
+
+  // Afficher la liste des villes
+  function showCityList() {
+    cityDetails.style.display = 'none';
+    cityList.style.display = 'flex';
+  }
+
+  // Ouvrir modal image
+  function openModal(src, text) {
+    modalImg.src = src;
+    modalCaption.textContent = text;
+    imageModal.style.display = 'block';
+  }
+
+  // Fermer modal image
+  closeModal.onclick = function() {
+    imageModal.style.display = 'none';
+  }
+
+  // Afficher les détails d'une ville avec images secondaires
+  function showCityDetails(index) {
+    const city = cities[index];
+    cityList.style.display = 'none';
+    cityDetails.style.display = 'block';
+
+    // HTML pour images secondaires
+    // let secondaryHTML = '';
+    // if(city.secondaryImages && city.secondaryImages.length > 0) {
+    //   secondaryHTML = '<div class="secondary-images">';
+    //   city.secondaryImages.forEach(img => {
+    //     secondaryHTML += `
+    //       <div class="secondary-image-container" onclick="openModal('${img.src}', '${img.text}')">
+    //         <img src="${img.src}" alt="${img.text}" />
+    //         <p>${img.text}</p>
+    //       </div>
+    //     `;
+    //   });
+    //   secondaryHTML += '</div>';
+    // }
+    secondaryHTML = '<div class="secondary-images">';
+city.secondaryImages.forEach(img => {
+  // Encode les valeurs pour éviter les problèmes dans l'URL
+  const encodedSrc = encodeURIComponent(img.src);
+  const encodedText = encodeURIComponent(img.text);
+  secondaryHTML += `
+    <div class="secondary-image-container">
+   <a href="image-details.html?src=${encodedSrc}&text=${encodedText}" style="text-decoration:none; color: inherit;">
+        <img src="${img.src}" alt="${img.text}" />
+        <p>${img.text}</p>
+      </a>
+    </div>
+  `;
+});
+secondaryHTML += '</div>';
+
+    detailsContent.innerHTML = `
+      <h2>${city.name}</h2>
+      <img src="${city.image}" alt="${city.name}" class="main-image" onclick="openModal('${city.image}', '${city.details}')" />
+      <p style="margin-top: 15px; font-size:1.1rem;">${city.details}</p>
+      ${secondaryHTML}
+    `;
+  }
+
+  // Créer les cartes des villes
+  cities.forEach((city, index) => {
+    const card = document.createElement('div');
+    card.className = 'city-card';
+
+    card.innerHTML = `
+      <img src="${city.image}" alt="${city.name}" class="city-image" />
+      <div class="city-info">
+        <div class="city-name">${city.name}</div>
+        <div class="city-desc">${city.description}</div>
+      </div>
+    `;
+
+    card.addEventListener('click', () => {
+      showCityDetails(index);
+    });
+
+    cityList.appendChild(card);
+  });
+
+  // Bouton pour changer le mode sombre
+  toggleDarkModeBtn.addEventListener('click', () => {
+    document.body.classList.toggle('dark-mode');
+  });
+  
+</script>
+
+</body>
+</html>
